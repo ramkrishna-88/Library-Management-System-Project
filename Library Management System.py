@@ -9,13 +9,11 @@ class LibraryApp:
         self.root.geometry("1200x700+100+50")
         self.root.resizable(False, False)
 
-        # --- Title ---
         title = tk.Label(self.root, text="Library Management System",
                          bg="#3b5998", fg="white", font=("Elephant", 36, "bold"),
                          bd=4, relief="raised", pady=10)
         title.pack(side="top", fill="x")
 
-        # --- Option Frame (Left) ---
         optFrame = tk.Frame(self.root, bd=4, relief="ridge", bg="#f0f0f0")
         optFrame.place(width=300, height=550, x=30, y=120)
 
@@ -32,11 +30,9 @@ class LibraryApp:
                             bg="#2196f3", fg="white", bd=3, relief="raised",
                             font=("Arial", 16, "bold"), width=18, height=2)
             btn.grid(row=i, column=0, padx=20, pady=12)
-            # Hover effect
             btn.bind("<Enter>", lambda e, b=btn: b.config(bg="#1976d2"))
             btn.bind("<Leave>", lambda e, b=btn: b.config(bg="#2196f3"))
 
-        # --- Detail Frame (Right) ---
         self.detFrame = tk.Frame(self.root, bd=4, relief="ridge", bg="#fff9c4")
         self.detFrame.place(width=840, height=550, x=350, y=120)
 
@@ -46,12 +42,10 @@ class LibraryApp:
         self.tabFun()
         self.currentFrame = None
 
-    # -------------------- DATABASE --------------------
     def dbFun(self):
         self.con = pymysql.connect(host="localhost", user="root", passwd="Ram@1234", database="librarydb")
         self.cur = self.con.cursor()
 
-    # -------------------- TABLE --------------------
     def tabFun(self):
         tabFrame = tk.Frame(self.detFrame, bd=4, relief="sunken", bg="#b2ebf2")
         tabFrame.place(width=800, height=420, x=20, y=80)
@@ -87,13 +81,11 @@ class LibraryApp:
             self.currentFrame.destroy()
             self.currentFrame = None
 
-    # -------------------- ADD BOOK --------------------
     def addFrameFun(self):
         self.close_current_frame()
         self.currentFrame = tk.Frame(self.root, bd=5, relief="ridge", bg="#aed581")
         self.currentFrame.place(width=450, height=450, x=400, y=140)
 
-        # Text fields
         entries = [("Title:", "title"), ("Author:", "author"), ("Genre:", "genre")]
         self.addVars = {}
         for i, (lbl, var) in enumerate(entries):
@@ -102,7 +94,6 @@ class LibraryApp:
             ent.grid(row=i, column=1, padx=10, pady=12)
             self.addVars[var] = ent
 
-        # Dropdown for Status
         tk.Label(self.currentFrame, text="Status:", font=("arial", 15, "bold"), bg="#aed581").grid(row=3, column=0, padx=20, pady=12, sticky="w")
         self.status_var = ttk.Combobox(self.currentFrame, values=("Available", "Borrowed",'Return'),
                                        font=("arial", 15, "bold"), width=22, state="readonly")
@@ -135,7 +126,6 @@ class LibraryApp:
         else:
             messagebox.showerror("Error", "All fields are required!")
 
-    # -------------------- SEARCH BOOK --------------------
     def searchFrameFun(self):
         self.close_current_frame()
         self.currentFrame = tk.Frame(self.root, bd=5, relief="ridge", bg="#64b5f6")
@@ -176,7 +166,6 @@ class LibraryApp:
         else:
             messagebox.showerror("Error", "Please enter valid search criteria!")
 
-    # -------------------- UPDATE BOOK --------------------
     def updateFrameFun(self):
         self.close_current_frame()
         self.currentFrame = tk.Frame(self.root, bd=5, relief="ridge", bg="#ffe082")
@@ -218,7 +207,6 @@ class LibraryApp:
         else:
             messagebox.showerror("Error", "All fields are required!")
 
-    # -------------------- SHOW ALL --------------------
     def showAll(self):
         try:
             self.dbFun()
@@ -231,7 +219,6 @@ class LibraryApp:
         except Exception as e:
             messagebox.showerror("Error", f"Error: {e}")
 
-    # -------------------- DELETE BOOK --------------------
     def deleteFrameFun(self):
         self.close_current_frame()
         self.currentFrame = tk.Frame(self.root, bd=5, relief="ridge", bg="#ef9a9a")
@@ -262,8 +249,6 @@ class LibraryApp:
         else:
             messagebox.showerror("Error", "Enter valid Book ID!")
 
-
-# -------------------- RUN APP --------------------
 if __name__ == "__main__":
     root = tk.Tk()
     app = LibraryApp(root)
